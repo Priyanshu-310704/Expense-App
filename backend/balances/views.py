@@ -12,8 +12,15 @@ class BalanceViewSet(viewsets.ViewSet):
         group_id = request.query_params.get("group")
         if not group_id:
             return Response({"detail": "group query parameter is required"}, status=400)
-        group = ExpenseGroup.objects.get(id=group_id)
-        return Response({"balances": group_balances(group), "suggested_settlements": settlement_suggestions(group)})
+        # Ensure the group belongs to the current user
+        try:
+            group = ExpenseGroup.objects.get(id=group_id, created_by=request.user)
+        except ExpenseGroup.DoesNotExist:
+            return Response({"detail": "Group not found."}, status=404)
+        return Response({
+            "balances": group_balances(group),
+            "suggested_settlements": settlement_suggestions(group)
+        })
 
     @action(detail=False, methods=["get"])
     def ledger(self, request):
@@ -21,5 +28,9 @@ class BalanceViewSet(viewsets.ViewSet):
         person_id = request.query_params.get("person")
         if not group_id:
             return Response({"detail": "group query parameter is required"}, status=400)
-        group = ExpenseGroup.objects.get(id=group_id)
+        # Ensure the group belongs to the current user
+        try:
+            group = ExpenseGroup.objects.get(id=group_id, created_by=request.user)
+        except ExpenseGroup.DoesNotExist:
+            return Response({"detail": "Group not found."}, status=404)
         return Response(LedgerEntrySerializer(person_ledger(group, person_id), many=True).data)

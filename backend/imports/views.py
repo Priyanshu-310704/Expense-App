@@ -2,15 +2,21 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from groups.models import ExpenseGroup
 from .models import ImportAnomaly, ImportBatch
 from .serializers import ImportAnomalySerializer, ImportBatchSerializer
 from .services import commit_batch, create_import_batch, import_report, resolve_anomaly
 
 
 class ImportBatchViewSet(viewsets.ModelViewSet):
-    queryset = ImportBatch.objects.prefetch_related("rows__anomalies", "anomalies").all()
     serializer_class = ImportBatchSerializer
     http_method_names = ["get", "post", "patch", "delete", "head", "options"]
+
+    def get_queryset(self):
+        user_groups = ExpenseGroup.objects.filter(created_by=self.request.user)
+        return ImportBatch.objects.prefetch_related(
+            "rows__anomalies", "anomalies"
+        ).filter(group__in=user_groups)
 
     def create(self, request, *args, **kwargs):
         upload = request.FILES.get("file")

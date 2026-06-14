@@ -20,18 +20,19 @@ class HealthView(APIView):
 
 
 router = DefaultRouter()
-router.register("people", PersonViewSet)
-router.register("groups", ExpenseGroupViewSet)
-router.register("memberships", MembershipViewSet)
+router.register("people", PersonViewSet, basename="person")
+router.register("groups", ExpenseGroupViewSet, basename="group")
+router.register("memberships", MembershipViewSet, basename="membership")
 router.register("currency-rates", CurrencyRateViewSet)
-router.register("expenses", ExpenseViewSet)
-router.register("settlements", SettlementViewSet)
-router.register("imports", ImportBatchViewSet)
+router.register("expenses", ExpenseViewSet, basename="expense")
+router.register("settlements", SettlementViewSet, basename="settlement")
+router.register("imports", ImportBatchViewSet, basename="importbatch")
 router.register("balances", BalanceViewSet, basename="balances")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/health/", HealthView.as_view()),
+    path("api/auth/", include("authentication.urls")),
     path("api/auth/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/", include(router.urls)),
