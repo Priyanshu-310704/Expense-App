@@ -32,7 +32,7 @@ import {
 import "./styles.css";
 
 // ─── API helper ────────────────────────────────────────────────────────────
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000/api";
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.PROD ? "/api" : "http://localhost:8000/api");
 
 type ApiOptions = RequestInit & { auth?: boolean };
 
@@ -547,17 +547,21 @@ function Ledger({ groupId }: { groupId?: number }) {
 function Imports() {
   const [file, setFile] = React.useState<File | null>(null);
   const [uploading, setUploading] = React.useState(false);
+  const [uploadError, setUploadError] = React.useState("");
   const batches = useLoad<any[]>("/imports/", []);
 
   async function upload() {
     if (!file) return;
     setUploading(true);
+    setUploadError("");
     const form = new FormData();
     form.append("file", file);
     try {
       await api("/imports/", { method: "POST", body: form });
       batches.reload();
       setFile(null);
+    } catch (err: any) {
+      setUploadError(err.message || "Failed to upload CSV");
     } finally {
       setUploading(false);
     }
@@ -593,6 +597,12 @@ function Imports() {
             {uploading ? "Uploading…" : "Upload CSV"}
           </button>
         </div>
+        {uploadError && (
+          <div className="error-msg" style={{ marginTop: "1rem" }}>
+            <AlertCircle size={15} />
+            {uploadError}
+          </div>
+        )}
       </div>
 
       {batches.data.map((batch: any) => (

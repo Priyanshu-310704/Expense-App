@@ -83,7 +83,8 @@ def add_anomaly(batch, row, category, severity, description, detected_value, act
 
 
 def ensure_seed_data(user=None):
-    group, _ = ExpenseGroup.objects.get_or_create(name="Spreetail Shared Flat", defaults={"created_by": user})
+    group_name = f"{user.username}'s Expense Group" if user else "Default Expense Group"
+    group, _ = ExpenseGroup.objects.get_or_create(name=group_name, created_by=user)
     people = {}
     for name in ["Aisha", "Rohan", "Priya", "Meera", "Dev", "Sam", "Kabir"]:
         people[name], _ = Person.objects.get_or_create(display_name=name)
