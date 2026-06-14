@@ -20,8 +20,14 @@ def get_rate(currency, on_date):
     return rate, Decimal(rate.rate_to_inr)
 
 
-def convert_to_inr(amount, currency, on_date):
-    rate_obj, rate = get_rate(currency, on_date)
+def convert_to_inr(amount, currency, on_date, rate_cache=None):
+    if rate_cache is not None:
+        key = (currency, on_date)
+        if key not in rate_cache:
+            rate_cache[key] = get_rate(currency, on_date)
+        rate_obj, rate = rate_cache[key]
+    else:
+        rate_obj, rate = get_rate(currency, on_date)
     return money(Decimal(amount) * rate), rate_obj
 
 
@@ -68,9 +74,12 @@ def rebuild_expense_ledger(expense):
     LedgerEntry.objects.filter(expense=expense).delete()
     if expense.status != Expense.STATUS_APPROVED:
         return
-    LedgerEntry.objects.create(group=expense.group, person=expense.payer, expense=expense, date=expense.date, kind=LedgerEntry.KIND_EXPENSE_PAYMENT, amount_in_inr=expense.amount_in_inr, memo=f"Paid: {expense.description}")
-    for split in expense.splits.select_related("person"):
-        LedgerEntry.objects.create(group=expense.group, person=split.person, expense=expense, date=expense.date, kind=LedgerEntry.KIND_EXPENSE_SHARE, amount_in_inr=-split.amount_in_inr, memo=f"Share: {expense.description}")
+    entries = [
+        LedgerEntry(group=expense.group, person=expense.payer, expense=expense, date=expense.date, kind=LedgerEntry.KIND_EXPENSE_PAYMENT, amount_in_inr=expense.amount_in_inr, memo=f"Paid: {expense.description}")
+    ]
+    for split in expense.splits.all() if hasattr(expense, "splits") else []:
+        entries.append(LedgerEntry(group=expense.group, person=split.person, expense=expense, date=expense.date, kind=LedgerEntry.KIND_EXPENSE_SHARE, amount_in_inr=-split.amount_in_inr, memo=f"Share: {expense.description}"))
+    LedgerEntry.objects.bulk_create(entries)
 
 
 @transaction.atomic
