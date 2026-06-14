@@ -1,0 +1,259 @@
+{
+  "batch_id": 2,
+  "source_filename": "Expenses Export.csv",
+  "total_rows": 42,
+  "committed_rows": 0,
+  "skipped_rows": 0,
+  "anomalies": [
+    {
+      "row_number": 6,
+      "category": "duplicate",
+      "severity": "warning",
+      "description": "Potential duplicate of an earlier row; importer will not auto-delete.",
+      "detected_value": "matches row 5",
+      "chosen_action": "review duplicate pair",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 7,
+      "category": "amount_format",
+      "severity": "info",
+      "description": "Amount contains a thousands separator and was normalized.",
+      "detected_value": "1,200",
+      "chosen_action": "parsed as 1200",
+      "approval_required": false,
+      "status": "open"
+    },
+    {
+      "row_number": 9,
+      "category": "alias_normalized",
+      "severity": "info",
+      "description": "Payer alias/casing/whitespace normalized.",
+      "detected_value": "priya",
+      "chosen_action": "mapped to Priya",
+      "approval_required": false,
+      "status": "open"
+    },
+    {
+      "row_number": 10,
+      "category": "precision_rounding",
+      "severity": "warning",
+      "description": "Amount has more than two decimal places and will require explicit rounding approval.",
+      "detected_value": "899.995",
+      "chosen_action": "round using ROUND_HALF_UP",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 11,
+      "category": "alias_normalized",
+      "severity": "info",
+      "description": "Payer alias/casing/whitespace normalized.",
+      "detected_value": "Priya S",
+      "chosen_action": "mapped to Priya",
+      "approval_required": false,
+      "status": "open"
+    },
+    {
+      "row_number": 13,
+      "category": "missing_payer",
+      "severity": "error",
+      "description": "Paid-by field is empty.",
+      "detected_value": "",
+      "chosen_action": "blocked until payer is selected",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 14,
+      "category": "settlement_like",
+      "severity": "warning",
+      "description": "Row looks like a payment/settlement and must not be treated as a normal expense.",
+      "detected_value": "Rohan paid Aisha back",
+      "chosen_action": "review/import as settlement",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 15,
+      "category": "split_inconsistency",
+      "severity": "error",
+      "description": "Percentage split does not total 100%.",
+      "detected_value": "Aisha 30%; Rohan 30%; Priya 30%; Meera 20%",
+      "chosen_action": "blocked until corrected",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 20,
+      "category": "currency_conversion",
+      "severity": "info",
+      "description": "USD row will be converted using manual date-effective rate while preserving original amount.",
+      "detected_value": "USD",
+      "chosen_action": "convert to INR with traceable rate",
+      "approval_required": false,
+      "status": "open"
+    },
+    {
+      "row_number": 21,
+      "category": "currency_conversion",
+      "severity": "info",
+      "description": "USD row will be converted using manual date-effective rate while preserving original amount.",
+      "detected_value": "USD",
+      "chosen_action": "convert to INR with traceable rate",
+      "approval_required": false,
+      "status": "open"
+    },
+    {
+      "row_number": 23,
+      "category": "currency_conversion",
+      "severity": "info",
+      "description": "USD row will be converted using manual date-effective rate while preserving original amount.",
+      "detected_value": "USD",
+      "chosen_action": "convert to INR with traceable rate",
+      "approval_required": false,
+      "status": "open"
+    },
+    {
+      "row_number": 23,
+      "category": "unknown_person",
+      "severity": "warning",
+      "description": "Participant appears to be an ad-hoc guest and needs reviewer approval.",
+      "detected_value": "Dev's friend Kabir",
+      "chosen_action": "map to Kabir as one-day guest",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 25,
+      "category": "near_duplicate",
+      "severity": "warning",
+      "description": "Potential duplicate with conflicting payer or amount.",
+      "detected_value": "similar to row 24",
+      "chosen_action": "review both rows",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 26,
+      "category": "currency_conversion",
+      "severity": "info",
+      "description": "USD row will be converted using manual date-effective rate while preserving original amount.",
+      "detected_value": "USD",
+      "chosen_action": "convert to INR with traceable rate",
+      "approval_required": false,
+      "status": "open"
+    },
+    {
+      "row_number": 26,
+      "category": "negative_amount",
+      "severity": "warning",
+      "description": "Negative amount may be a refund and needs approval.",
+      "detected_value": "-30",
+      "chosen_action": "review as refund",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 27,
+      "category": "alias_normalized",
+      "severity": "info",
+      "description": "Payer alias/casing/whitespace normalized.",
+      "detected_value": "rohan ",
+      "chosen_action": "mapped to Rohan",
+      "approval_required": false,
+      "status": "open"
+    },
+    {
+      "row_number": 27,
+      "category": "invalid_date",
+      "severity": "error",
+      "description": "Date is missing year and uses month-name format; suggested value is 2026-03-14.",
+      "detected_value": "Mar-14",
+      "chosen_action": "blocked until reviewer supplies date",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 28,
+      "category": "missing_currency",
+      "severity": "error",
+      "description": "Currency is missing; importer will not infer INR.",
+      "detected_value": "",
+      "chosen_action": "blocked",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 31,
+      "category": "zero_amount",
+      "severity": "warning",
+      "description": "Zero amount cannot affect balances without reviewer intent.",
+      "detected_value": "",
+      "chosen_action": "blocked/review",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 32,
+      "category": "split_inconsistency",
+      "severity": "error",
+      "description": "Percentage split does not total 100%.",
+      "detected_value": "Aisha 30%; Rohan 30%; Priya 30%; Meera 20%",
+      "chosen_action": "blocked until corrected",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 34,
+      "category": "ambiguous_date",
+      "severity": "error",
+      "description": "Notes explicitly say this date may mean April 5 or May 4.",
+      "detected_value": "04-05-2026",
+      "chosen_action": "blocked until reviewer chooses date",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 36,
+      "category": "inactive_member",
+      "severity": "warning",
+      "description": "Participant is outside active membership period for expense date.",
+      "detected_value": "Meera on 2026-04-02",
+      "chosen_action": "review participant inclusion",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 38,
+      "category": "inactive_member",
+      "severity": "warning",
+      "description": "Payer is outside active membership period for expense date.",
+      "detected_value": "Sam on 2026-04-08",
+      "chosen_action": "review payer/date before committing",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 38,
+      "category": "settlement_like",
+      "severity": "warning",
+      "description": "Row looks like a payment/settlement and must not be treated as a normal expense.",
+      "detected_value": "Sam deposit share",
+      "chosen_action": "review/import as settlement",
+      "approval_required": true,
+      "status": "open"
+    },
+    {
+      "row_number": 42,
+      "category": "conflicting_split_details",
+      "severity": "warning",
+      "description": "Equal split row also contains explicit split details.",
+      "detected_value": "Aisha 1; Rohan 1; Priya 1; Sam 1",
+      "chosen_action": "review whether details should override equal split",
+      "approval_required": true,
+      "status": "open"
+    }
+  ]
+}
