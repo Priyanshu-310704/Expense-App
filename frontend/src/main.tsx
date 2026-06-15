@@ -54,7 +54,7 @@ function formatMoney(value: string | number) {
 }
 
 // ─── Auth guard ────────────────────────────────────────────────────────────
-function RequireAuth({ children }: { children: JSX.Element }) {
+function RequireAuth({ children }: { children: React.ReactElement }) {
   const token = localStorage.getItem("access");
   if (!token) return <Navigate to="/login" replace />;
   return children;
