@@ -17,8 +17,8 @@ docker compose exec backend python manage.py seed_assignment
 ```
 
 Open:
-- Frontend: https://expense-g25d0jdwp-priyanshu14.vercel.app/login
-- Backend API: expense-g25d0jdwp-priyanshu14.vercel.app/api/health/
+- Frontend: https://expense-g25d0jdwp-priyanshu14.vercel.app
+- Backend API: https://expense-g25d0jdwp-priyanshu14.vercel.app/api/health/
 
 Demo login after seeding: `demo / demo12345`.
 
